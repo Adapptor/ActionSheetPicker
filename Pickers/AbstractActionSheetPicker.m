@@ -241,9 +241,10 @@
 #pragma mark - Utilities and Accessors
 
 - (CGSize)viewSize {
+    CGSize screenRect = [UIScreen mainScreen].bounds.size;
     if (![self isViewPortrait])
-        return CGSizeMake(480, 320);
-    return CGSizeMake(320, 480);
+        return CGSizeMake(screenRect.height, screenRect.width);
+    return CGSizeMake(screenRect.width, screenRect.height);
 }
 
 - (BOOL)isViewPortrait {
@@ -277,16 +278,19 @@
 
 - (void)configureAndPresentActionSheetForView:(UIView *)aView {
     NSString *paddedSheetTitle = nil;
-    CGFloat sheetHeight = self.viewSize.height - 47;
+    CGFloat sheetHeight;
+    // FIXME: Hacked with magic numbers because I don't have time to understand how this library works
     if ([self isViewPortrait]) {
-        paddedSheetTitle = @"\n\n\n"; // looks hacky to me
+        sheetHeight = 480;
     } else {
-        NSString *reqSysVer = @"5.0";
-        NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
-        if ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending) {
-            sheetHeight = self.viewSize.width;
-        } else {
-            sheetHeight += 103;
+        sheetHeight = self.viewSize.height;
+        for (UIView *view in aView.subviews) {
+            if ([view isKindOfClass:[UIDatePicker class]]) {
+                sheetHeight += 60;
+            }
+            else if ([view isKindOfClass:[UIPickerView class]]) {
+                sheetHeight += 170;
+            }
         }
     }
     _actionSheet = [[UIActionSheet alloc] initWithTitle:paddedSheetTitle delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
