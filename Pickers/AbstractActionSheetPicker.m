@@ -105,6 +105,7 @@
     
     self.target = nil;
     
+    [super dealloc];
 }
 
 - (UIView *)configuredPickerView {
