@@ -254,7 +254,6 @@ BOOL isIPhone4() {
     UILabel *toolBarItemlabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 180,30)];
     [toolBarItemlabel setTextAlignment:NSTextAlignmentCenter];
     [toolBarItemlabel setTextColor: OSAtLeast(@"7.0") ? [UIColor blackColor] : [UIColor whiteColor]];
-    [toolBarItemlabel setTextColor:[UIColor whiteColor]];
     [toolBarItemlabel setFont:[UIFont boldSystemFontOfSize:16]];    
     [toolBarItemlabel setBackgroundColor:[UIColor clearColor]];    
     toolBarItemlabel.text = aTitle;    
@@ -312,11 +311,8 @@ BOOL isIPhone4() {
 
 - (void)configureAndPresentActionSheetForView:(UIView *)aView {
     NSString *paddedSheetTitle = nil;
-    CGFloat sheetHeight = 0;
-    if ([self isViewPortrait]) {
-//        paddedSheetTitle = @"\n\n\n"; // looks hacky to me // IT IS!
-    } else {
-        sheetHeight = self.viewSize.height;
+    CGFloat sheetHeight = self.viewSize.height;
+    if (![self isViewPortrait]) {
         for (UIView *view in aView.subviews) {
             if ([view isKindOfClass:[UIDatePicker class]]) {
                 sheetHeight += 60;
