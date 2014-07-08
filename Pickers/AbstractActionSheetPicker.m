@@ -312,7 +312,7 @@ BOOL isIPhone4() {
     NSString *paddedSheetTitle = nil;
     CGFloat sheetHeight = self.viewSize.height - 47;
     if ([self isViewPortrait]) {
-        paddedSheetTitle = @"\n\n\n"; // looks hacky to me
+//        paddedSheetTitle = @"\n\n\n"; // looks hacky to me // IT IS!
     } else {
         NSString *reqSysVer = @"5.0";
         NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
@@ -325,6 +325,11 @@ BOOL isIPhone4() {
     _actionSheet = [[UIActionSheet alloc] initWithTitle:paddedSheetTitle delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
     [_actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
     [_actionSheet addSubview:aView];
+    
+    // This is also hacky, I'm so sorry
+    UIToolbar* bgToolbar = [[UIToolbar alloc] initWithFrame:aView.frame];
+    bgToolbar.barStyle = UIBarStyleDefault;
+    [_actionSheet insertSubview:bgToolbar belowSubview:aView];
     [self presentActionSheet:_actionSheet];
     
     // Use beginAnimations for a smoother popup animation, otherwise the UIActionSheet pops into view
