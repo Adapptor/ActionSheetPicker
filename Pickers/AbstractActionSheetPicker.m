@@ -118,7 +118,6 @@ BOOL isIPhone4() {
     
     self.target = nil;
     
-    [super dealloc];
 }
 
 - (UIView *)configuredPickerView {
@@ -313,7 +312,7 @@ BOOL isIPhone4() {
 
 - (void)configureAndPresentActionSheetForView:(UIView *)aView {
     NSString *paddedSheetTitle = nil;
-    CGFloat sheetHeight;
+    CGFloat sheetHeight = 0;
     if ([self isViewPortrait]) {
 //        paddedSheetTitle = @"\n\n\n"; // looks hacky to me // IT IS!
     } else {
